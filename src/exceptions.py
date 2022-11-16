@@ -1,0 +1,2 @@
+class ChatIDNotFoundInMessageError(Exception):
+    pass
