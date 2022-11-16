@@ -5,7 +5,7 @@ from aiogram.types import ParseMode
 from aiogram.utils import executor
 
 from handlers import register_handlers
-
+from middlewares import ConfigInjectMiddleware
 from config import load_config
 
 
@@ -15,6 +15,8 @@ def main():
 
     bot = Bot(config.bot.token, parse_mode=ParseMode.HTML)
     dp = Dispatcher(bot)
+
+    dp.setup_middleware(ConfigInjectMiddleware(config))
 
     register_handlers(dp)
 
