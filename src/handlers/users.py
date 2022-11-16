@@ -1,7 +1,18 @@
 from aiogram import Dispatcher
+from aiogram.types import Message, ContentType
+
+from config import Config
+from shortcuts import send_signed_text_message
 
 __all__ = ('register_handlers',)
 
 
+async def on_user_text_message(message: Message, config: Config):
+    await send_signed_text_message(message.bot, message.text, message.chat.id, config.bot.admin_ids)
+
+
 def register_handlers(dispatcher: Dispatcher):
-    pass
+    dispatcher.register_message_handler(
+        on_user_text_message,
+        content_types=(ContentType.TEXT,),
+    )
