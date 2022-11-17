@@ -13,6 +13,7 @@ __all__ = (
 class BotConfig:
     token: str
     admin_ids: set[int]
+    start_message: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,6 +35,7 @@ def load_config(config_file_path: pathlib.Path | str) -> Config:
             bot=BotConfig(
                 token=bot_config['token'],
                 admin_ids=set(bot_config['admin_ids']),
+                start_message=bot_config['start_message'] or None,
             )
         )
     except KeyError as error:

@@ -1,6 +1,7 @@
 {
   "telegram_bot": {
     "token": "",
-    "admin_ids": []
+    "admin_ids": [],
+    "start_message": ""
   }
 }
