@@ -13,7 +13,14 @@ async def on_start(message: Message, config: Config):
 
 
 async def on_user_text_message(message: Message, config: Config):
-    await send_signed_text_message(message.bot, message.text, message.chat.id, config.bot.admin_ids)
+    # TODO rewrite send method to separate class
+    await send_signed_text_message(
+        bot=message.bot,
+        text=message.text,
+        from_chat_id=message.chat.id,
+        message_id=message.message_id,
+        to_chat_ids=config.bot.admin_ids,
+    )
 
 
 def register_handlers(dispatcher: Dispatcher):

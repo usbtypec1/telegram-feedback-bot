@@ -22,11 +22,21 @@ def extract_chat_id_from_text(text: str) -> int:
         raise exceptions.ChatIDNotFoundInMessageError
 
 
-async def send_signed_text_message(bot: Bot, text: str, from_chat_id: int, to_chat_ids: Iterable[int]):
-    text = f'{text}\n\n#ID{from_chat_id}'
+def create_message_signature(chat_id: int, message_id: int) -> str:
+    return f'#ID{chat_id}@{message_id}'
+
+
+def sign_text(signature, text: str):
+    return f'{text}\n\n{signature}'
+
+
+async def send_signed_text_message(bot: Bot, text: str, from_chat_id: int, message_id: int, to_chat_ids: Iterable[int]):
+    message_signature = create_message_signature(from_chat_id, message_id)
+    signed_text = sign_text(message_signature, text)
+
     for to_chat_id in to_chat_ids:
         try:
-            await bot.send_message(to_chat_id, text)
+            await bot.send_message(to_chat_id, signed_text)
         except TelegramAPIError:
             logging.warning(f'Could not send message to {to_chat_id}')
 
