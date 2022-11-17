@@ -31,10 +31,17 @@ def load_config(config_file_path: pathlib.Path | str) -> Config:
         raise KeyError(f'Missing {error} section in config.json')
 
     try:
+        admin_ids = set(bot_config['admin_ids'])
+    except KeyError:
+        raise KeyError('Missing "admin_ids" field in config.json')
+    if not admin_ids:
+        raise KeyError('There must be at least 1 admin ID')
+
+    try:
         return Config(
             bot=BotConfig(
                 token=bot_config['token'],
-                admin_ids=set(bot_config['admin_ids']),
+                admin_ids=admin_ids,
                 start_message=bot_config['start_message'] or None,
             )
         )
