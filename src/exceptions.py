@@ -1,2 +1,2 @@
-class ChatIDNotFoundInMessageError(Exception):
+class InvalidSignatureError(Exception):
     pass

@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 from typing import Iterable
 
 from aiogram import Bot
@@ -9,29 +10,38 @@ import exceptions
 
 __all__ = (
     'send_signed_text_message',
-    'extract_chat_id_from_text',
+    'MessageSignature',
     'get_message',
 )
 
 
-def extract_chat_id_from_text(text: str) -> int:
-    try:
-        chat_id = text.split('#ID')[-1]
-        return int(chat_id)
-    except (ValueError, IndexError):
-        raise exceptions.ChatIDNotFoundInMessageError
+@dataclass(frozen=True, slots=True)
+class MessageSignature:
+    chat_id: int
+    message_id: int
+
+    def to_text(self) -> str:
+        return f'#ID{self.chat_id}@{self.message_id}'
+
+    @classmethod
+    def from_text(cls, text: str) -> 'MessageSignature':
+        try:
+            signature_part = text.split('#ID')[-1]
+            chat_id, message_id = signature_part.split('@')
+            return cls(chat_id=int(chat_id), message_id=int(message_id))
+        except (ValueError, IndexError):
+            raise exceptions.InvalidSignatureError
 
 
-def create_message_signature(chat_id: int, message_id: int) -> str:
-    return f'#ID{chat_id}@{message_id}'
+def sign_text(signature: MessageSignature, text: str):
+    return f'{text}\n\n{signature.to_text()}'
 
 
-def sign_text(signature, text: str):
-    return f'{text}\n\n{signature}'
-
-
-async def send_signed_text_message(bot: Bot, text: str, from_chat_id: int, message_id: int, to_chat_ids: Iterable[int]):
-    message_signature = create_message_signature(from_chat_id, message_id)
+async def send_signed_text_message(
+        bot: Bot, text: str,
+        message_signature: MessageSignature,
+        to_chat_ids: Iterable[int],
+):
     signed_text = sign_text(message_signature, text)
 
     for to_chat_id in to_chat_ids:
