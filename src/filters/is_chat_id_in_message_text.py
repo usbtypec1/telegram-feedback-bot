@@ -8,7 +8,7 @@ __all__ = ('IsChatIDInMessageTextFilter',)
 
 
 class IsChatIDInMessageTextFilter(BoundFilter):
-    key = 'chat_ids_filter'
+    key = 'is_chat_id_in_message_text'
 
     async def check(self, message: Message) -> bool | dict:
         try:

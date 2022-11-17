@@ -5,11 +5,11 @@ from aiogram.types import Message, CallbackQuery, Update
 
 from shortcuts import get_message
 
-__all__ = ('AllowedChatIdsFilter',)
+__all__ = ('IsChatIDAllowed',)
 
 
-class AllowedChatIdsFilter(BoundFilter):
-    key = 'chat_ids_filter'
+class IsChatIDAllowed(BoundFilter):
+    key = 'is_chat_id_allowed'
 
     def __init__(self, chat_ids: Iterable[int]):
         self.__chat_ids = set(chat_ids)
