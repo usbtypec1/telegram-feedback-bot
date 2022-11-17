@@ -2,8 +2,6 @@ from aiogram import Dispatcher
 from aiogram.types import Message, ContentType
 from aiogram.utils.exceptions import BadRequest
 
-from filters import InverseFilter
-
 __all__ = ('register_handlers',)
 
 
@@ -27,13 +25,13 @@ def register_handlers(dispatcher: Dispatcher, filters: dict):
     dispatcher.register_message_handler(
         on_admin_did_not_reply_to_message,
         filters['is_admin'],
-        InverseFilter(filters['is_reply_to_message']),
+        ~filters['is_reply_to_message'],
         content_types=ContentType.TEXT,
     )
     dispatcher.register_message_handler(
         on_chat_id_not_in_message_text,
         filters['is_admin'],
-        InverseFilter(filters['is_chat_id_in_message_text']),
+        ~filters['is_chat_id_in_message_text'],
         content_types=ContentType.TEXT,
     )
     dispatcher.register_message_handler(
