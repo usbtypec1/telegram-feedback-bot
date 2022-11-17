@@ -3,7 +3,7 @@ from aiogram.dispatcher.filters import CommandStart
 from aiogram.types import Message, ContentType
 
 from config import Config
-from shortcuts import send_signed_text_message
+from shortcuts import send_signed_text_message, MessageSignature
 
 __all__ = ('register_handlers',)
 
@@ -17,8 +17,7 @@ async def on_user_text_message(message: Message, config: Config):
     await send_signed_text_message(
         bot=message.bot,
         text=message.text,
-        from_chat_id=message.chat.id,
-        message_id=message.message_id,
+        message_signature=MessageSignature(chat_id=message.chat.id, message_id=message.message_id),
         to_chat_ids=config.bot.admin_ids,
     )
 

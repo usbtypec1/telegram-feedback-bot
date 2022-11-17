@@ -4,16 +4,22 @@ from aiogram.utils.exceptions import BadRequest
 
 __all__ = ('register_handlers',)
 
+from shortcuts import MessageSignature
+
 
 async def on_chat_id_not_in_message_text(message: Message):
     await message.reply('ID пользователя не найдено в сообщении')
 
 
-async def on_admin_message_text(message: Message, from_chat_id: int):
+async def on_admin_message_text(message: Message, message_signature: MessageSignature):
     try:
-        await message.bot.send_message(from_chat_id, message.text)
+        await message.bot.send_message(
+            chat_id=message_signature.chat_id,
+            text=message.text,
+            reply_to_message_id=message_signature.message_id,
+        )
     except BadRequest:
-        await message.reply(f'Не удалось отправить сообщение пользователю с ID{from_chat_id}')
+        await message.reply(f'Не удалось отправить сообщение пользователю с ID{message_signature.chat_id}')
 
 
 async def on_admin_did_not_reply_to_message(message: Message):

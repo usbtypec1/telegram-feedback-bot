@@ -2,7 +2,7 @@ from aiogram.dispatcher.filters import BoundFilter
 from aiogram.types import Message
 
 import exceptions
-from shortcuts import extract_chat_id_from_text
+from shortcuts import MessageSignature
 
 __all__ = ('IsChatIDInMessageTextFilter',)
 
@@ -12,6 +12,6 @@ class IsChatIDInMessageTextFilter(BoundFilter):
 
     async def check(self, message: Message) -> bool | dict:
         try:
-            return {'from_chat_id': extract_chat_id_from_text(message.reply_to_message.text)}
-        except exceptions.ChatIDNotFoundInMessageError:
+            return {'message_signature': MessageSignature.from_text(message.reply_to_message.text)}
+        except exceptions.InvalidSignatureError:
             return False
