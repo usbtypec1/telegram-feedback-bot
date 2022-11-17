@@ -1,6 +1,8 @@
+import logging
 from typing import Iterable
 
 from aiogram import Bot
+from aiogram.utils.exceptions import TelegramAPIError
 
 import exceptions
 
@@ -21,4 +23,7 @@ def extract_chat_id_from_text(text: str) -> int:
 async def send_signed_text_message(bot: Bot, text: str, from_chat_id: int, to_chat_ids: Iterable[int]):
     text = f'{text}\n\n#ID{from_chat_id}'
     for to_chat_id in to_chat_ids:
-        await bot.send_message(to_chat_id, text)
+        try:
+            await bot.send_message(to_chat_id, text)
+        except TelegramAPIError:
+            logging.warning(f'Could not send message to {to_chat_id}')
