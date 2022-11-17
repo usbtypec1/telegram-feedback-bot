@@ -7,7 +7,7 @@ from aiogram.utils import executor
 from handlers import register_handlers
 from middlewares import ConfigInjectMiddleware
 from config import load_config
-from filters import IsChatIDAllowed, IsChatIDInMessageTextFilter
+from filters import IsChatIDAllowed, IsChatIDInMessageTextFilter, IsReplyToMessageFilter
 
 
 def main():
@@ -20,8 +20,9 @@ def main():
     dp.setup_middleware(ConfigInjectMiddleware(config))
 
     filters = {
-        'only_admins_filter': IsChatIDAllowed(config.bot.admin_ids),
-        'chat_id_in_message_filter': IsChatIDInMessageTextFilter(),
+        'is_admin': IsChatIDAllowed(config.bot.admin_ids),
+        'is_chat_id_in_message_text': IsChatIDInMessageTextFilter(),
+        'is_reply_to_message': IsReplyToMessageFilter(),
     }
 
     register_handlers(dp, filters=filters)
