@@ -7,6 +7,7 @@ from aiogram.utils import executor
 from handlers import register_handlers
 from middlewares import ConfigInjectMiddleware
 from config import load_config
+from filters import AllowedChatIdsFilter
 
 
 def main():
@@ -18,7 +19,11 @@ def main():
 
     dp.setup_middleware(ConfigInjectMiddleware(config))
 
-    register_handlers(dp)
+    filters = {
+        'only_admins_filter': AllowedChatIdsFilter(config.bot.admin_ids),
+    }
+
+    register_handlers(dp, filters=filters)
 
     executor.start_polling(dispatcher=dp, skip_updates=True)
 
