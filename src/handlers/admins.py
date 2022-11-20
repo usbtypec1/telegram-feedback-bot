@@ -2,9 +2,9 @@ from aiogram import Dispatcher
 from aiogram.types import Message, ContentType
 from aiogram.utils.exceptions import BadRequest
 
-__all__ = ('register_handlers',)
-
 from shortcuts import MessageSignature
+
+__all__ = ('register_handlers',)
 
 
 async def on_chat_id_not_in_message_text(message: Message):

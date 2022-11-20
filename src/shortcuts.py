@@ -1,17 +1,13 @@
-import logging
 from dataclasses import dataclass
-from typing import Iterable
 
-from aiogram import Bot
 from aiogram.types import Message, CallbackQuery, Update
-from aiogram.utils.exceptions import TelegramAPIError
 
 import exceptions
 
 __all__ = (
-    'send_signed_text_message',
     'MessageSignature',
     'get_message',
+    'sign_text',
 )
 
 
@@ -35,20 +31,6 @@ class MessageSignature:
 
 def sign_text(signature: MessageSignature, text: str):
     return f'{text}\n\n{signature.to_text()}'
-
-
-async def send_signed_text_message(
-        bot: Bot, text: str,
-        message_signature: MessageSignature,
-        to_chat_ids: Iterable[int],
-):
-    signed_text = sign_text(message_signature, text)
-
-    for to_chat_id in to_chat_ids:
-        try:
-            await bot.send_message(to_chat_id, signed_text)
-        except TelegramAPIError:
-            logging.warning(f'Could not send message to {to_chat_id}')
 
 
 def get_message(query: Message | CallbackQuery | Update) -> Message:
