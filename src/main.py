@@ -8,7 +8,7 @@ from bot import AdminsBot
 from handlers import register_handlers
 from middlewares import DependencyInjectMiddleware
 from config import load_config
-from filters import IsChatIDAllowed, IsChatIDInMessageTextFilter, IsReplyToMessageFilter
+from filters import IsChatIDAllowedFilter, IsChatIDInMessageTextFilter, IsReplyToMessageFilter
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
     dp.setup_middleware(DependencyInjectMiddleware(admins_bot=admins_bot, start_message=config.bot.start_message))
 
     filters = {
-        'is_admin': IsChatIDAllowed(config.bot.admin_ids),
+        'is_admin': IsChatIDAllowedFilter(config.bot.admin_ids),
         'is_chat_id_in_message_text': IsChatIDInMessageTextFilter(),
         'is_reply_to_message': IsReplyToMessageFilter(),
     }

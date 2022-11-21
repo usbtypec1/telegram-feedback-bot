@@ -8,4 +8,4 @@ class IsReplyToMessageFilter(BoundFilter):
     key = 'is_reply_to_message'
 
     async def check(self, message: Message) -> bool:
-        return message.reply_to_message is not None
+        return isinstance(message.reply_to_message, Message)
