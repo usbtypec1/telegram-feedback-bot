@@ -1,5 +1,9 @@
 # Telegram Feedback Bot
 
+---
+
+![Tests](https://github.com/usbtypec1/telegram-feedback-bot/actions/workflows/unittests.yaml/badge.svg)
+![License](https://img.shields.io/github/license/usbtypec1/telegram-feedback-bot?color=30C654)
 ## Конфигурирование
 
 - Скопируйте файл `config.json.dist` и назовите его `config.json`
