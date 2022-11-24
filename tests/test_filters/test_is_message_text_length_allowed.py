@@ -24,3 +24,10 @@ def filter():
 async def test_is_message_text_length_allowed(text, text_length_limit, expected):
     filter = IsMessageTextLengthAllowedFilter(text_length_limit)
     assert await filter.check(Message(text=text)) == expected
+
+
+def test_invalid_message_text_length():
+    for text_length_limit in (0, 1):
+        with pytest.raises(ValueError) as error:
+            IsMessageTextLengthAllowedFilter(text_length_limit)
+        assert error.value.args[0] == 'Length limit must be greater than 1'
