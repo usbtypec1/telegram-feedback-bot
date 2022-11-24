@@ -2,6 +2,8 @@
   "telegram_bot": {
     "token": "",
     "admin_ids": [],
-    "start_message": ""
+    "start_message": "",
+    "message_caption_length_limit": 0,
+    "message_text_length_limit": 0
   }
 }

@@ -8,7 +8,12 @@ from bot import AdminsBot
 from handlers import register_handlers
 from middlewares import DependencyInjectMiddleware
 from config import load_config
-from filters import IsChatIDAllowedFilter, IsChatIDInMessageTextFilter, IsReplyToMessageFilter
+from filters import (
+    IsChatIDAllowedFilter,
+    IsChatIDInMessageTextFilter,
+    IsReplyToMessageFilter,
+    IsMessageTextLengthAllowedFilter,
+)
 
 
 def main():
@@ -26,6 +31,8 @@ def main():
         'is_admin': IsChatIDAllowedFilter(config.bot.admin_ids),
         'is_chat_id_in_message_text': IsChatIDInMessageTextFilter(),
         'is_reply_to_message': IsReplyToMessageFilter(),
+        'is_message_text_length_allowed': IsMessageTextLengthAllowedFilter(config.bot.message_text_length_limit),
+        'is_message_caption_length_allowed': IsMessageTextLengthAllowedFilter(config.bot.message_caption_length_limit),
     }
 
     register_handlers(dp, filters=filters)

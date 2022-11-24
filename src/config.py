@@ -14,6 +14,8 @@ class BotConfig:
     token: str
     admin_ids: set[int]
     start_message: str
+    message_text_length_limit: int
+    message_caption_length_limit: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -43,6 +45,8 @@ def load_config(config_file_path: pathlib.Path | str) -> Config:
                 token=bot_config['token'],
                 admin_ids=admin_ids,
                 start_message=bot_config['start_message'] or None,
+                message_caption_length_limit=bot_config['message_caption_length_limit'],
+                message_text_length_limit=bot_config['message_text_length_limit'],
             )
         )
     except KeyError as error:
