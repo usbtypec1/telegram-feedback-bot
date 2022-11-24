@@ -18,4 +18,5 @@ class IsMessageTextLengthAllowedFilter(BoundFilter):
             raise ValueError('Length limit must be greater than 1')
 
     async def check(self, message: Message) -> bool:
-        return len(message.text) < self.__text_length_limit
+        message_text = message.text or message.caption
+        return len(message_text) < self.__text_length_limit
