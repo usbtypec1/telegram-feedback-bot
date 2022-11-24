@@ -31,3 +31,10 @@ def test_invalid_message_text_length():
         with pytest.raises(ValueError) as error:
             IsMessageTextLengthAllowedFilter(text_length_limit)
         assert error.value.args[0] == 'Length limit must be greater than 1'
+
+
+@pytest.mark.asyncio
+async def test_message_has_caption_and_no_text():
+    message = Message(text='aaaaaaaaaaaaaaaaaaaa')
+    filter = IsMessageTextLengthAllowedFilter(21)
+    assert await filter.check(message) == True
