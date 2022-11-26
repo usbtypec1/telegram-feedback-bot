@@ -17,6 +17,11 @@ async def on_user_text_message(message: Message, admins_bot: AdminsBot):
     await admins_bot.send_messages(message.text, signature)
 
 
+async def on_user_photo_message(message: Message, admins_bot: AdminsBot):
+    signature = MessageSignature(chat_id=message.chat.id, message_id=message.message_id)
+    await admins_bot.send_photos(message.photo[-1].file_id, signature, message.caption)
+
+
 def register_handlers(dispatcher: Dispatcher):
     dispatcher.register_message_handler(
         on_start,
@@ -25,4 +30,8 @@ def register_handlers(dispatcher: Dispatcher):
     dispatcher.register_message_handler(
         on_user_text_message,
         content_types=(ContentType.TEXT,),
+    )
+    dispatcher.register_message_handler(
+        on_user_photo_message,
+        content_types=ContentType.PHOTO,
     )

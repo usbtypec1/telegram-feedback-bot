@@ -38,3 +38,17 @@ async def test_message_has_caption_and_no_text():
     message = Message(text='aaaaaaaaaaaaaaaaaaaa')
     filter = IsMessageTextLengthAllowedFilter(21)
     assert await filter.check(message) == True
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    'is_message_text_required,expected',
+    [
+        (False, True),
+        (True, False),
+    ]
+)
+async def test_message_has_no_caption_and_no_text(is_message_text_required, expected):
+    message = Message()
+    filter = IsMessageTextLengthAllowedFilter(10, is_message_text_required=is_message_text_required)
+    assert await filter.check(message) == expected
